@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - CORAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-100 min-h-screen">
+  <nav class="bg-slate-900 text-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <span class="font-bold text-xl">CORAL Admin Dashboard</span>
+      <div class="space-x-4 flex items-center">
+        <a href="admin-manage.html" class="text-sm bg-sky-600 px-3 py-1 rounded hover:bg-sky-700 font-semibold">+ New Announcement</a>
+        <button onclick="adminLogout()" class="text-sm bg-rose-600 px-3 py-1 rounded hover:bg-rose-700 font-semibold">Logout</button>
+      </div>
+    </div>
+  </nav>
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-slate-900 mb-6">Administrator Control Panel</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-xl shadow border-l-4 border-sky-600">
+        <h3 class="text-slate-500 text-sm font-bold uppercase">Total Announcements</h3>
+        <p id="statTotal" class="text-3xl font-extrabold text-slate-900 mt-2">0</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow border-l-4 border-emerald-500">
+        <h3 class="text-slate-500 text-sm font-bold uppercase">Active Advisories</h3>
+        <p id="statActive" class="text-3xl font-extrabold text-slate-900 mt-2">0</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow border-l-4 border-amber-500">
+        <h3 class="text-slate-500 text-sm font-bold uppercase">Archived</h3>
+        <p id="statArchived" class="text-3xl font-extrabold text-slate-900 mt-2">0</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-lg font-bold text-slate-900 mb-4">Manage Published Announcements</h2>
+      <div id="adminTable" class="overflow-x-auto"></div>
+    </div>
+  </main>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/db.js"></script>
+  <script>
+    checkAdminAuth();
+    const items = getAnnouncements();
+    document.getElementById('statTotal').textContent = items.length;
+    document.getElementById('statActive').textContent = items.filter(i => i.status === 'Active').length;
+    document.getElementById('statArchived').textContent = items.filter(i => i.status === 'Archived').length;
+
+    document.getElementById('adminTable').innerHTML = `
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b text-xs text-slate-500 uppercase bg-slate-50">
+            <th class="p-3">Title</th>
+            <th class="p-3">Category</th>
+            <th class="p-3">Status</th>
+            <th class="p-3">Source</th>
+            <th class="p-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y text-sm">
+          \${items.map(i => `
+            <tr>
+              <td class="p-3 font-semibold text-slate-900">\${i.title}</td>
+              <td class="p-3 uppercase text-xs font-bold text-sky-700">\${i.category}</td>
+              <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-xs font-bold">\${i.status}</span></td>
+              <td class="p-3 text-slate-600">\${i.sourceOrg}</td>
+              <td class="p-3"><button onclick="deleteItem('\${i.id}')" class="text-rose-600 hover:underline font-bold text-xs">Delete</button></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    function deleteItem(id) {
+      if (confirm("Are you sure?")) {
+        saveAnnouncements(items.filter(i => i.id !== id));
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>

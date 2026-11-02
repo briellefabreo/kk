@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Announcements - CORAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between">
+  <div>
+    <nav class="bg-sky-700 text-white shadow-md">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="index.html" class="font-bold text-xl">CORAL</a>
+        <a href="index.html" class="text-sm underline">Back to Home</a>
+      </div>
+    </nav>
+    <main class="max-w-7xl mx-auto px-4 py-8">
+      <h1 class="text-3xl font-extrabold text-slate-900 mb-6">All Community Announcements</h1>
+      <div id="allFeed" class="space-y-4"></div>
+    </main>
+  </div>
+  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm">
+    <p>&copy; 2026 CORAL Project Team.</p>
+  </footer>
+  <script src="assets/js/db.js"></script>
+  <script>
+    const list = getAnnouncements();
+    document.getElementById('allFeed').innerHTML = list.map(i => `
+      <div class="bg-white p-5 rounded-lg shadow border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div>
+          <span class="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-1 rounded">\${i.category.toUpperCase()}</span>
+          <h2 class="text-xl font-bold mt-2 text-slate-900">\${i.title}</h2>
+          <p class="text-slate-600 text-sm mt-1">\${i.summary}</p>
+          <p class="text-xs text-slate-400 mt-2">Source: \${i.sourceOrg} | Issued: \${i.sourceDate}</p>
+        </div>
+        <a href="details.html?id=\${i.id}" class="mt-4 md:mt-0 bg-sky-600 text-white px-4 py-2 rounded text-sm font-bold hover:bg-sky-700">Read More</a>
+      </div>
+    `).join('');
+  </script>
+</body>
+</html>

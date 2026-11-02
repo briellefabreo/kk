@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sea Travel Status - CORAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between">
+  <div>
+    <nav class="bg-sky-600 text-white shadow-md">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="index.html" class="font-bold text-xl">🚢 CORAL Sea Travel Status</a>
+        <a href="index.html" class="text-sm underline">Back to Home</a>
+      </div>
+    </nav>
+    <main class="max-w-7xl mx-auto px-4 py-8">
+      <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Sea Travel Status</h1>
+      <p class="text-slate-600 mb-6">Port operations, vessel schedules, and Coast Guard travel advisories for Corcuera port.</p>
+      <div id="seaFeed" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </main>
+  </div>
+  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm">
+    <p>&copy; 2026 CORAL Project Team.</p>
+  </footer>
+  <script src="assets/js/db.js"></script>
+  <script>
+    const items = getAnnouncements().filter(i => i.category === 'sea');
+    document.getElementById('seaFeed').innerHTML = items.length ? items.map(i => `
+      <div class="bg-white p-6 rounded-xl shadow border-l-4 border-sky-500">
+        <h2 class="text-xl font-bold text-slate-900 mb-2">\${i.title}</h2>
+        <p class="text-slate-600 text-sm mb-4">\${i.details}</p>
+        <p class="text-xs text-slate-500"><strong>Location:</strong> \${i.location}</p>
+        <p class="text-xs text-slate-500 mt-1"><strong>Source:</strong> \${i.sourceOrg}</p>
+      </div>
+    `).join('') : '<p class="text-slate-500">No active sea travel restrictions currently reported.</p>';
+  </script>
+</body>
+</html>

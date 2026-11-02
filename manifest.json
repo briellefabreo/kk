@@ -1,0 +1,21 @@
+{
+  "name": "CORAL - Corcuera Community Reports & Alerts Link",
+  "short_name": "CORAL",
+  "description": "Community information and monitoring app for Corcuera, Romblon.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0284c7",
+  "icons": [
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

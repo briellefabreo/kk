@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Interruption Status - CORAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between">
+  <div>
+    <nav class="bg-amber-600 text-white shadow-md">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="index.html" class="font-bold text-xl">⚡ CORAL Power Tracker</a>
+        <a href="index.html" class="text-sm underline">Back to Home</a>
+      </div>
+    </nav>
+    <main class="max-w-7xl mx-auto px-4 py-8">
+      <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Power Interruption Information</h1>
+      <p class="text-slate-600 mb-6">Verified power schedules and maintenance notices issued by ROMELCO for Corcuera.</p>
+      <div id="powerFeed" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </main>
+  </div>
+  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm">
+    <p>&copy; 2026 CORAL Project Team.</p>
+  </footer>
+  <script src="assets/js/db.js"></script>
+  <script>
+    const items = getAnnouncements().filter(i => i.category === 'power');
+    document.getElementById('powerFeed').innerHTML = items.length ? items.map(i => `
+      <div class="bg-white p-6 rounded-xl shadow border-l-4 border-amber-500">
+        <h2 class="text-xl font-bold text-slate-900 mb-2">\${i.title}</h2>
+        <p class="text-slate-600 text-sm mb-4">\${i.details}</p>
+        <p class="text-xs text-slate-500"><strong>Affected Area:</strong> \${i.location}</p>
+        <p class="text-xs text-slate-500 mt-1"><strong>Source:</strong> \${i.sourceOrg} (\${i.sourceRef})</p>
+      </div>
+    `).join('') : '<p class="text-slate-500">No active power interruption advisories at this time.</p>';
+  </script>
+</body>
+</html>
